@@ -1,1 +1,9 @@
-A YouTube-like/video sharing website-like clone.
+# watchme
+
+a generic video upload and sharing platform
+
+## concept
+
+purposefully extremely simple
+
+use to build your own?
