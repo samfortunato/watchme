@@ -1,6 +1,14 @@
+import { redirect } from 'next/navigation';
+
+import { auth } from '@/lib/auth';
+
 import { uploadVideo } from './actions';
 
-export default function Upload() {
+export default async function Upload() {
+	const session = await auth();
+
+	if (!session) redirect('/sign-in');
+
 	return (
 		<main>
 			<h2>Upload</h2>
