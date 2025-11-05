@@ -1,3 +1,4 @@
+import Link from 'next/link.js';
 import { sql } from '@vercel/postgres';
 
 export default async function Home() {
@@ -13,10 +14,14 @@ export default async function Home() {
         <article key={video.id}>
           <h2>{video.title}</h2>
 
-          <h3>Description</h3>
-          <p>{video.description}</p>
-
-          <video src={video.url} controls></video>
+          <Link href={`watch/${video.id}`}>
+            <video
+              src={video.url}
+              muted
+              disablePictureInPicture
+              disableRemotePlayback
+            ></video>
+          </Link>
         </article>
       ))}
     </main>
