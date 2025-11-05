@@ -1,0 +1,22 @@
+import { uploadVideo } from './actions';
+
+export default function Upload() {
+	return (
+		<main>
+			<h2>Upload</h2>
+
+			<form action={uploadVideo}>
+				<label htmlFor="video">Video</label>
+				<input type="file" name="video" id="video" />
+
+				<label htmlFor="title">Title</label>
+				<input type="text" name="title" id="title" />
+
+				<label htmlFor="description">description</label>
+				<input type="text" name="description" id="description" />
+
+				<input type="submit" value="Upload" />
+			</form>
+		</main>
+	);
+}
