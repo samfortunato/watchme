@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
+import { Session } from 'next-auth';
+
+import { auth, signOut } from '@/lib/auth';
 
 import "./globals.css";
 
@@ -8,7 +11,37 @@ export const metadata: Metadata = {
   description: "A generic video sharing platform",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+type SessionControlProps = {
+  session: Session | null,
+};
+
+function SessionControl({ session }: SessionControlProps) {
+  async function handleSignOut() {
+    'use server';
+
+    await signOut();
+  }
+
+  function SignOutButton() {
+    return (
+      <form action={handleSignOut}>
+        <button>Sign Out</button>
+      </form>
+    );
+  }
+
+  function SignInButton() {
+    return (
+      <Link href="/sign-in">Sign In</Link>
+    );
+  }
+
+  return session ? <SignOutButton /> : <SignInButton />;
+}
+
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body>
@@ -17,9 +50,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
           <nav>
             <ul>
-              <li>
-                <Link href="/upload">Upload</Link>
-              </li>
+              <li><SessionControl session={session} /></li>
+              <li><Link href="/upload">Upload</Link></li>
             </ul>
           </nav>
         </header>

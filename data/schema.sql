@@ -25,6 +25,16 @@ create table if not exists video_comments (
 	video_id integer not null references videos(id) on delete cascade
 );
 
+create table if not exists users (
+	id serial primary key,
+
+	email varchar(255) unique not null,
+	password_digest text not null,
+
+	created_at timestamp default now(),
+	updated_at timestamp default now()
+);
+
 create or replace function update_updated_at()
 returns trigger as $$
 begin
