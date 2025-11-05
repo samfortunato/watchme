@@ -15,13 +15,11 @@ export async function uploadVideo(formData: FormData) {
 		addRandomSuffix: true,
 	});
 
-	const { rows } = await sql`
+	const { rows: [{ id }] } = await sql`
 		insert into videos (url, title, description)
 		values (${blob.url}, ${title}, ${description})
 		returning id;
 	`;
-
-	const id = rows[0].id;
 
 	redirect(`watch/${id}`);
 }
