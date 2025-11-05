@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { put } from '@vercel/blob';
 import { sql } from '@vercel/postgres';
 
@@ -14,10 +14,13 @@ export async function uploadVideo(formData: FormData) {
 		contentType: file.type,
 	});
 
-	await sql`
+	const { rows } = await sql`
 		insert into videos (url, title, description)
-		values (${blob.url}, ${title}, ${description});
+		values (${blob.url}, ${title}, ${description})
+		returning id;
 	`;
 
-	revalidatePath('/');
+	const id = rows[0].id;
+
+	redirect(`watch/${id}`);
 }
