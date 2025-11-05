@@ -24,3 +24,22 @@ create table if not exists video_comments (
 	comment_id integer not null references comments(id) on delete cascade,
 	video_id integer not null references videos(id) on delete cascade
 );
+
+create or replace function update_updated_at()
+returns trigger as $$
+begin
+	new.updated_at = now();
+
+	return new;
+end;
+$$ language plpgsql;
+
+create trigger videos_updated_at
+before update on videos
+for each row
+execute function update_updated_at();
+
+create trigger comments_updated_at
+before update on comments
+for each row
+execute function update_updated_at();
