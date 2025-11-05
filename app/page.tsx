@@ -1,14 +1,24 @@
-export default function Home() {
+import { sql } from '@vercel/postgres';
+
+export default async function Home() {
+  const { rows: videos } = await sql`
+    select *
+    from videos
+    order by created_at desc;
+  `;
+
   return (
     <main>
-      <article>
-        <h2>Test</h2>
+      {videos.map((video) => (
+        <article key={video.id}>
+          <h2>{video.title}</h2>
 
-        <h3>Description</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis veniam eligendi est eius cupiditate illum nulla, atque sit eveniet. Ab delectus eveniet exercitationem corrupti assumenda, neque voluptates fugit consequatur officia!</p>
+          <h3>Description</h3>
+          <p>{video.description}</p>
 
-        <video src="./test.mp4" controls></video>
-      </article>
+          <video src={video.url} controls></video>
+        </article>
+      ))}
     </main>
   );
 }
