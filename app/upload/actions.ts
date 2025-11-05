@@ -12,6 +12,7 @@ export async function uploadVideo(formData: FormData) {
 	const blob = await put(file.name, file, {
 		access: 'public',
 		contentType: file.type,
+		addRandomSuffix: true,
 	});
 
 	const { rows } = await sql`
