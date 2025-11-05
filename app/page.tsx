@@ -1,4 +1,4 @@
-import Link from 'next/link.js';
+import Link from 'next/link';
 import { sql } from '@vercel/postgres';
 
 export default async function Home() {
