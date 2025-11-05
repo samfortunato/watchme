@@ -1,5 +1,7 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { sql } from '@vercel/postgres';
+
+import { auth } from '@/lib/auth';
 
 import { postComment } from './actions';
 
@@ -26,6 +28,10 @@ export default async function Watch({ params }: WatchParams) {
 
 	async function handlePostComment(formData: FormData) {
 		'use server';
+
+		const session = await auth();
+
+		if (!session) redirect('/sign-in');
 
 		await postComment(formData, video.id);
 	}
