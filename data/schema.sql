@@ -34,11 +34,13 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists videos_updated_at on videos;
 create trigger videos_updated_at
 before update on videos
 for each row
 execute function update_updated_at();
 
+drop trigger if exists comments_updated_at on comments;
 create trigger comments_updated_at
 before update on comments
 for each row
